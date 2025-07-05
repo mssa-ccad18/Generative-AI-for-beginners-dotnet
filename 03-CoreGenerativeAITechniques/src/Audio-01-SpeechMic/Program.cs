@@ -16,14 +16,45 @@ if (string.IsNullOrEmpty(speechKey) || string.IsNullOrEmpty(speechRegion))
 
 var speechTranslationConfig = SpeechTranslationConfig.FromSubscription(speechKey, speechRegion);
 speechTranslationConfig.SpeechRecognitionLanguage = "en-US";
-speechTranslationConfig.AddTargetLanguage("es-ES");
+speechTranslationConfig.AddTargetLanguage("zh-TW");
 
 using var audioConfig = AudioConfig.FromDefaultMicrophoneInput();
 using var translationRecognizer = new TranslationRecognizer(speechTranslationConfig, audioConfig);
 
 Console.WriteLine("Speak into your microphone.");
-var translationRecognitionResult = await translationRecognizer.RecognizeOnceAsync();
-OutputSpeechRecognitionResult(translationRecognitionResult);
+//var translationRecognitionResult = await translationRecognizer.RecognizeOnceAsync();
+//OutputSpeechRecognitionResult(translationRecognitionResult);
+
+translationRecognizer.Recognized += TranslationRecognizer_Recognized;
+await translationRecognizer.StartContinuousRecognitionAsync();
+Console.OutputEncoding = System.Text.Encoding.UTF8;
+while (true) {
+
+    await Task.Delay(1000);
+}
+
+void TranslationRecognizer_Recognized(object? sender, TranslationRecognitionEventArgs e)
+{
+    if (e.Result.Reason == ResultReason.TranslatedSpeech)
+    {
+        OutputSpeechRecognitionResult(e.Result);
+    }
+    else if (e.Result.Reason == ResultReason.NoMatch)
+    {
+        Console.WriteLine("NOMATCH: Speech could not be recognized.");
+    }
+    else if (e.Result.Reason == ResultReason.Canceled)
+    {
+        var cancellation = CancellationDetails.FromResult(e.Result);
+        Console.WriteLine($"CANCELED: Reason={cancellation.Reason}");
+        if (cancellation.Reason == CancellationReason.Error)
+        {
+            Console.WriteLine($"CANCELED: ErrorCode={cancellation.ErrorCode}");
+            Console.WriteLine($"CANCELED: ErrorDetails={cancellation.ErrorDetails}");
+            Console.WriteLine($"CANCELED: Did you set the speech resource key and region values?");
+        }
+    }
+}
 
 void OutputSpeechRecognitionResult(TranslationRecognitionResult translationRecognitionResult)
 {
