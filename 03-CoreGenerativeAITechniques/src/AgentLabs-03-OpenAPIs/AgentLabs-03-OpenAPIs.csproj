@@ -17,7 +17,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="specs\parksinformationopenapi.json">
+		<None Update="specs\currency.json">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="specs\weather.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>

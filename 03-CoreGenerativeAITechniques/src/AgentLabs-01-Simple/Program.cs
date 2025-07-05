@@ -18,6 +18,9 @@ var options = new DefaultAzureCredentialOptions
 {
     ExcludeEnvironmentCredential = true,
     ExcludeWorkloadIdentityCredential = true,
+    ExcludeManagedIdentityCredential = true,
+    ExcludeVisualStudioCredential = true,
+
     TenantId = tenantid
 };
 
@@ -25,7 +28,7 @@ PersistentAgentsClient persistentClient = new(aifoundryproject_endpoint, new Def
 
 // create Agent
 var agentResponse = await persistentClient.Administration.CreateAgentAsync(
-   model: "gpt-4.1",
+   model: "gpt-4o",
     name: "Math Tutor",
     instructions: "You are a personal math tutor. Write and run code to answer math questions.",
     tools: [new CodeInterpreterToolDefinition()]);
@@ -76,6 +79,5 @@ await foreach (PersistentThreadMessage threadMessage in messages)
 }
 Console.WriteLine("==========================");
 
-// delete the agent after use
-await persistentClient.Administration.DeleteAgentAsync(agentMathTutor.Id);
+//await persistentClient.Administration.DeleteAgentAsync(agentMathTutor.Id);
 Console.WriteLine($"Agent {agentMathTutor.Name} deleted.");

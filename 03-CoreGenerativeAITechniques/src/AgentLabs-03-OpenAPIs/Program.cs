@@ -26,19 +26,26 @@ PersistentAgentsClient persistentClient = new(aifoundryproject_endpoint, new Def
 
 OpenApiAnonymousAuthDetails oaiAuth = new();
 OpenApiToolDefinition parksinformationOpenApiTool = new(
-    name: "get_park_information",
-    description: "Retrieve parks information for a location",
-    spec: BinaryData.FromBytes(File.ReadAllBytes(@"./specs/parksinformationopenapi.json")),
+    name: "weather",
+    description: "Retrieve weather information for a location",
+    spec: BinaryData.FromBytes(File.ReadAllBytes(@"./specs/weather.json")),
+    openApiAuthentication: oaiAuth
+);
+
+OpenApiToolDefinition currencyinformationOpenApiTool = new(
+    name: "currency",
+    description: "Retrieve Country info by the 3 letter currency code.",
+    spec: BinaryData.FromBytes(File.ReadAllBytes(@"./specs/currency.json")),
     openApiAuthentication: oaiAuth
 );
 
 // create Agent
 var agentResponse = await persistentClient.Administration.CreateAgentAsync(
-   model: "gpt-4.1",
+   model: "gpt-4o",
     name: "SDK Test Agent - Vacation",
     instructions: @"You are a travel assistant. Use the provided functions to help answer questions. 
 Customize your responses to the user's preferences as much as possible. Write and run code to answer user questions.",
-    tools: new List<ToolDefinition> { parksinformationOpenApiTool }
+    tools: new List<ToolDefinition> { parksinformationOpenApiTool, currencyinformationOpenApiTool }
     );
 var agentTravelAssistant = agentResponse.Value;
 
@@ -46,7 +53,7 @@ var agentTravelAssistant = agentResponse.Value;
 PersistentAgentThread thread = await persistentClient.Threads.CreateThreadAsync();
 
 // user question
-var question = "My name is Bruno, I want to know the weather in Seattle, and also information from the parks in the city";
+var question = "weather at the capital of country that uses GBP currency";
 PersistentThreadMessage message = await persistentClient.Messages.CreateMessageAsync(
     thread.Id,
     MessageRole.User,

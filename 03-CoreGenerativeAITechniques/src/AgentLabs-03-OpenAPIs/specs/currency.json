@@ -1,0 +1,105 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "REST Countries API",
+    "version": "3.1.0",
+    "description": "Lookup countries by currency code"
+  },
+  "servers": [
+    {
+      "url": "https://restcountries.com/v3.1"
+    }
+  ],
+  "paths": {
+    "/currency/{currency}": {
+      "get": {
+        "summary": "Get countries by currency",
+        "description": "Returns a list of countries that use the specified ISO 4217 currency code.",
+        "operationId": "GetCountriesByCurrency",
+        "parameters": [
+          {
+            "name": "currency",
+            "in": "path",
+            "required": true,
+            "description": "ISO 4217 currency code (e.g. USD, EUR, JPY)",
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Z]{3}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A JSON array of country objects",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Country"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No countries found for the given currency code"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Country": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "object",
+            "properties": {
+              "common": { "type": "string" },
+              "official": { "type": "string" }
+            }
+          },
+          "cca2": { "type": "string" },
+          "cca3": { "type": "string" },
+          "capital": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "region": { "type": "string" },
+          "subregion": { "type": "string" },
+          "population": { "type": "integer" },
+          "currencies": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string" },
+                "symbol": { "type": "string" }
+              }
+            }
+          },
+          "languages": {
+            "type": "object",
+            "additionalProperties": { "type": "string" }
+          },
+          "flags": {
+            "type": "object",
+            "properties": {
+              "png": {
+                "type": "string",
+                "format": "uri"
+              },
+              "svg": {
+                "type": "string",
+                "format": "uri"
+              }
+            }
+          }
+        },
+        "required": [ "name", "cca2", "cca3" ]
+      }
+    }
+  }
+}

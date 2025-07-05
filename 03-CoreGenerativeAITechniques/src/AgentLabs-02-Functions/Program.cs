@@ -35,7 +35,7 @@ PersistentAgentsClient persistentClient = new(aifoundryproject_endpoint, new Def
 
 // create Agent
 var agentResponse = await persistentClient.Administration.CreateAgentAsync(
-   model: "gpt-4.1",
+   model: "gpt-4o",
     name: "SDK Test Agent - Vacation",
     instructions: @"You are a travel assistant. Use the provided functions to help answer questions. 
 Customize your responses to the user's preferences as much as possible. Write and run code to answer user questions.",
