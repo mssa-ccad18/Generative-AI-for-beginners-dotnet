@@ -82,21 +82,21 @@ namespace VideoGeneration_AzureSoraSDK_02
                 Console.WriteLine("Generating video with explicit dimensions...");
                 var jobId1 = await client.SubmitVideoJobAsync(
                     prompt: "A serene waterfall in a lush forest with sunlight filtering through trees",
-                    width: 1280,
-                    height: 720,
-                    nSeconds: 10);
+                    width: 480,
+                    height: 480,
+                    nSeconds: 5);
 
                 Console.WriteLine($"Job submitted: {jobId1}");
 
                 // Example 2: Submit video generation job with aspect ratio (v1.0.2+)
-                Console.WriteLine("\nGenerating video with aspect ratio...");
-                var jobId2 = await client.SubmitVideoJobAsync(
-                    prompt: "A futuristic city at night with flying cars and neon lights",
-                    aspectRatio: "16:9",
-                    quality: "high",
-                    nSeconds: 15);
+                //Console.WriteLine("\nGenerating video with aspect ratio...");
+                //var jobId2 = await client.SubmitVideoJobAsync(
+                //    prompt: "A futuristic city at night with flying cars and neon lights",
+                //    aspectRatio: "16:9",
+                //    quality: "high",
+                //    nSeconds: 15);
 
-                Console.WriteLine($"Job submitted: {jobId2}");
+                //Console.WriteLine($"Job submitted: {jobId2}");
 
                 // Wait for completion of first job
                 Console.WriteLine($"\nWaiting for job {jobId1} to complete...");
@@ -109,9 +109,9 @@ namespace VideoGeneration_AzureSoraSDK_02
                 await client.DownloadVideoAsync(videoUri, outputPath);
                 Console.WriteLine($"Video downloaded to: {outputPath}");
 
-                // Check status of second job
-                var status = await client.GetJobStatusAsync(jobId2);
-                Console.WriteLine($"\nJob {jobId2} status: {status.Status}");
+                //// Check status of second job
+                //var status = await client.GetJobStatusAsync(jobId2);
+                //Console.WriteLine($"\nJob {jobId2} status: {status.Status}");
 
                 // Example 3: Calculate custom dimensions
                 Console.WriteLine("\nDimension calculation examples:");

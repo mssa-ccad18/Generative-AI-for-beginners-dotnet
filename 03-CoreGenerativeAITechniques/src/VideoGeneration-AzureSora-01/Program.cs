@@ -20,7 +20,7 @@ if (string.IsNullOrWhiteSpace(endpoint) || string.IsNullOrWhiteSpace(apiKey))
 }
 
 // prompt
-string prompt = "Two puppies playing soccer in the moon. Use a cartoon style.";
+string prompt = "Two snails sharing glass tank with betta fish.";
 
 Directory.CreateDirectory(outputDir);
 Console.WriteLine($"Today is {DateTime.Now:dd-MMM-yyyy HH:mm:ss}");

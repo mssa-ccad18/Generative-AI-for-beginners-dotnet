@@ -19,7 +19,7 @@ foreach (var movie in movieData)
 
 // perform the search
 var query = "A family friendly movie that includes ogres and dragons";
-var queryEmbedding = await generator.GenerateVectorAsync(query);
+ var queryEmbedding = await generator.GenerateVectorAsync(query);
 
 await foreach (var resultItem in movies.SearchAsync(queryEmbedding, top: 2))
 {
