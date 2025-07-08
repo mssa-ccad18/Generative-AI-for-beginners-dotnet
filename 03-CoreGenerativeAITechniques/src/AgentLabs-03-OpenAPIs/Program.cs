@@ -96,5 +96,5 @@ await foreach (PersistentThreadMessage threadMessage in messages)
 Console.WriteLine("==========================");
 
 // delete the agent after use
-await persistentClient.Administration.DeleteAgentAsync(agentTravelAssistant.Id);
+//await persistentClient.Administration.DeleteAgentAsync(agentTravelAssistant.Id);
 Console.WriteLine($"Agent {agentTravelAssistant.Name} deleted.");

@@ -12,13 +12,13 @@ var apiKey = configuration["api_key"];
 AzureOpenAIClient azureClient = new(new Uri(url), new System.ClientModel.ApiKeyCredential(apiKey));
 var client = azureClient.GetImageClient(model);
 
-string prompt = "A kitten playing soccer in the moon. Use a comic style";
+string prompt = "A cat playing with a toy mouse. Use a realistic style";
 
 // generate an image using the prompt
 ImageGenerationOptions options = new()
 {
     Size = GeneratedImageSize.W1024xH1024,
-    Quality = "medium"
+    Quality = "standard"
 };
 GeneratedImage image = await client.GenerateImageAsync(prompt, options);
 

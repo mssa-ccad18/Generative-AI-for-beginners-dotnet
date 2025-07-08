@@ -26,11 +26,20 @@ var options = new DefaultAzureCredentialOptions
 
 PersistentAgentsClient persistentClient = new(aifoundryproject_endpoint, new DefaultAzureCredential(options));
 
+// dnd 5e api
+
+var client = new HttpClient();
+var request = new HttpRequestMessage(HttpMethod.Get, "https://www.dnd5eapi.co/api/2014");
+request.Headers.Add("Accept", "application/json");
+var response = await client.SendAsync(request);
+response.EnsureSuccessStatusCode();
+Console.WriteLine(await response.Content.ReadAsStringAsync());
+
 // create Agent
 var agentResponse = await persistentClient.Administration.CreateAgentAsync(
    model: "gpt-4o",
-    name: "Math Tutor",
-    instructions: "You are a personal math tutor. Write and run code to answer math questions.",
+    name: "Dungeon Master",
+    instructions: "You are a DnD Dungeon Master. Write a short scenario using dnd5eapi with a max of 10 scentences.",
     tools: [new CodeInterpreterToolDefinition()]);
 var agentMathTutor = agentResponse.Value;
 
@@ -38,7 +47,7 @@ var agentMathTutor = agentResponse.Value;
 PersistentAgentThread thread = await persistentClient.Threads.CreateThreadAsync();
 
 // user question
-var question = "My name is Bruno, I need to solve the equation `3x + 11 = 14`. Can you help me?";
+var question = "What scenario have you built?";
 PersistentThreadMessage message = await persistentClient.Messages.CreateMessageAsync(
     thread.Id,
     MessageRole.User,
@@ -80,4 +89,5 @@ await foreach (PersistentThreadMessage threadMessage in messages)
 Console.WriteLine("==========================");
 
 //await persistentClient.Administration.DeleteAgentAsync(agentMathTutor.Id);
+
 Console.WriteLine($"Agent {agentMathTutor.Name} deleted.");

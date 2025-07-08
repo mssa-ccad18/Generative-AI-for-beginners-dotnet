@@ -81,22 +81,22 @@ namespace VideoGeneration_AzureSoraSDK_02
                 // Example 1: Submit video generation job with explicit dimensions
                 Console.WriteLine("Generating video with explicit dimensions...");
                 var jobId1 = await client.SubmitVideoJobAsync(
-                    prompt: "A serene waterfall in a lush forest with sunlight filtering through trees",
-                    width: 1280,
-                    height: 720,
-                    nSeconds: 10);
+                    prompt: "A gnome gardening in a lush whimsical forest with a gnome sized home and lots of colorful mushrooms.",
+                    width: 480,
+                    height: 480,
+                    nSeconds: 5);
 
                 Console.WriteLine($"Job submitted: {jobId1}");
 
-                // Example 2: Submit video generation job with aspect ratio (v1.0.2+)
-                Console.WriteLine("\nGenerating video with aspect ratio...");
-                var jobId2 = await client.SubmitVideoJobAsync(
-                    prompt: "A futuristic city at night with flying cars and neon lights",
-                    aspectRatio: "16:9",
-                    quality: "high",
-                    nSeconds: 15);
+                //// Example 2: Submit video generation job with aspect ratio (v1.0.2+)
+                //Console.WriteLine("\nGenerating video with aspect ratio...");
+                //var jobId2 = await client.SubmitVideoJobAsync(
+                //    prompt: "A futuristic city at night with flying cars and neon lights",
+                //    aspectRatio: "16:9",
+                //    quality: "high",
+                //    nSeconds: 15);
 
-                Console.WriteLine($"Job submitted: {jobId2}");
+                //Console.WriteLine($"Job submitted: {jobId2}");
 
                 // Wait for completion of first job
                 Console.WriteLine($"\nWaiting for job {jobId1} to complete...");
@@ -104,23 +104,23 @@ namespace VideoGeneration_AzureSoraSDK_02
                 Console.WriteLine($"Video ready: {videoUri}");
 
                 // Download video
-                var outputPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "sora_videos", "waterfall.mp4");
+                var outputPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "sora_videos", "GardenGnome.mp4");
                 Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
                 await client.DownloadVideoAsync(videoUri, outputPath);
                 Console.WriteLine($"Video downloaded to: {outputPath}");
 
-                // Check status of second job
-                var status = await client.GetJobStatusAsync(jobId2);
-                Console.WriteLine($"\nJob {jobId2} status: {status.Status}");
+                //// Check status of second job
+                //var status = await client.GetJobStatusAsync(jobId2);
+                //Console.WriteLine($"\nJob {jobId2} status: {status.Status}");
 
-                // Example 3: Calculate custom dimensions
-                Console.WriteLine("\nDimension calculation examples:");
+                //// Example 3: Calculate custom dimensions
+                //Console.WriteLine("\nDimension calculation examples:");
                 
-                var (width, height) = SoraClient.GetCommonDimensions("1:1", "medium");
-                Console.WriteLine($"Square video (medium): {width}x{height}");
+                //var (width, height) = SoraClient.GetCommonDimensions("1:1", "medium");
+                //Console.WriteLine($"Square video (medium): {width}x{height}");
                 
-                var (w2, h2) = SoraClient.CalculateDimensionsFromAspectRatio("2.35:1", 1920);
-                Console.WriteLine($"Cinema format: {w2}x{h2}");
+                //var (w2, h2) = SoraClient.CalculateDimensionsFromAspectRatio("2.35:1", 1920);
+                //Console.WriteLine($"Cinema format: {w2}x{h2}");
             }
             catch (SoraValidationException ex)
             {

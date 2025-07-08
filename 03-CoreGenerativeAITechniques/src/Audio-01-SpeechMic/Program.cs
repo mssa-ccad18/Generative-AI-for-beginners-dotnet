@@ -2,11 +2,20 @@
 using Microsoft.CognitiveServices.Speech.Audio;
 using Microsoft.CognitiveServices.Speech.Translation;
 using Microsoft.Extensions.Configuration;
+using NAudio.CoreAudioApi;
+using System.Data;
 
+//NAudio nuget packege is used to 
+var enumerator = new MMDeviceEnumerator();
+foreach (var endpoint in
+         enumerator.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active))
+{
+    Console.WriteLine("{0} ({1})", endpoint.FriendlyName, endpoint.ID);
+}
 
 // get key and region
 string? speechKey = Environment.GetEnvironmentVariable("SPEECH_KEY");
-string? speechRegion = Environment.GetEnvironmentVariable("SPEECH_REGION");
+string ? speechRegion = Environment.GetEnvironmentVariable("SPEECH_REGION");
 if (string.IsNullOrEmpty(speechKey) || string.IsNullOrEmpty(speechRegion))
 {
     var config = new ConfigurationBuilder().AddUserSecrets<Program>().Build();
@@ -16,7 +25,7 @@ if (string.IsNullOrEmpty(speechKey) || string.IsNullOrEmpty(speechRegion))
 
 var speechTranslationConfig = SpeechTranslationConfig.FromSubscription(speechKey, speechRegion);
 speechTranslationConfig.SpeechRecognitionLanguage = "en-US";
-speechTranslationConfig.AddTargetLanguage("zh-TW");
+speechTranslationConfig.AddTargetLanguage("de-DE");
 
 using var audioConfig = AudioConfig.FromDefaultMicrophoneInput();
 using var translationRecognizer = new TranslationRecognizer(speechTranslationConfig, audioConfig);
@@ -26,8 +35,9 @@ Console.WriteLine("Speak into your microphone.");
 //OutputSpeechRecognitionResult(translationRecognitionResult);
 
 translationRecognizer.Recognized += TranslationRecognizer_Recognized;
-await translationRecognizer.StartContinuousRecognitionAsync();
 Console.OutputEncoding = System.Text.Encoding.UTF8;
+await translationRecognizer.StartContinuousRecognitionAsync();
+
 while (true) {
 
     await Task.Delay(1000);

@@ -12,6 +12,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CognitiveServices.Speech" Version="1.44.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.5" />
+    <PackageReference Include="NAudio" Version="2.2.1" />
   </ItemGroup>
 
 </Project>
